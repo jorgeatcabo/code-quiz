@@ -1,0 +1,54 @@
+/* Selectors */
+/* Universal Selector */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html {
+    height: 100%;
+  }
+  
+  body {
+    min-height: 100%;
+    line-height: 1;
+    font-family: sans-serif;
+  }
+  
+  
+  /* Classes */
+
+  
+  .scores-header{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+  }
+  
+  .main-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .start-section{
+    
+  }
+
+  .quiz-section{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .questions-heading{
+  }
+
+  .options-section{
+      display: flex;
+      flex-direction: column;
+      /* justify-content: left;   */
+      align-items: flex-start;
+  }
