@@ -41,12 +41,13 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    display: none;
   }
 
   .questions-heading{
   }
 
-  .options-section{
+  .answers-section{
       display: flex;
       flex-direction: column;
       /* justify-content: left;   */
