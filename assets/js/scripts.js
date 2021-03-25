@@ -48,7 +48,7 @@ const possibleAnswers = [
   },
   {
     id: "3",
-    answer: "",
+    answer: "<js>",
     questionid: 1,
     correct:"false",
   },
@@ -186,41 +186,94 @@ const possibleAnswers = [
   },
 ]
 
+var timerCount=90;
+
 var startSection = document.querySelector(".start-section")
 var quizSection = document.querySelector(".quiz-section")
+var timerElement = document.querySelector(".timer-count");
+timerElement.textContent=timerCount
+
 document.querySelector("#start-button").addEventListener("click", function () {
   startSection.style.display = "none"
   quizSection.style.display = "block"
+  startQuiz();
+  createAnswers();
 })
+
+
 
 var answersSection = document.querySelector(".answers-section")
 var questionsHeading = document.querySelector(".questions-heading")
 
-var chosenQuestion = Math.floor(Math.random() * questions.length);
-
-function findQuestion(obj) {
-  return obj.id === chosenQuestion;
+function startQuiz() {
+  // isWin = false;
+  //timerCount = 90;
+  // // Prevents start button from being clicked when round is in progress
+  //startButton.disabled = true;
+  // renderBlanks()
+  startTimer()
 }
 
-var question = questions.find(findQuestion)
 
-questionsHeading.textContent = question.question
+function startTimer() {
+  // Sets timer
+  timer = setInterval(function() {
+    timerCount--;
+    timerElement.textContent = timerCount;
+    if (timerCount >= 0) {
+      // Tests if win condition is met
+      // if (isWin && timerCount > 0) {
+      //   // Clears interval and stops timer
+      //   clearInterval(timer);
+      //   winGame();
+      // }
+    }
+  // Tests if time has run out
+  if (timerCount === 0) {
+    // Clears interval
+    // clearInterval(timer);
+    // loseGame();
+  }
+}, 1000);
+}
 
-var filteredAnswers = possibleAnswers
-  .filter(function (obj) {
-    return obj.questionid === chosenQuestion;
+
+function createAnswers(){
+  function findQuestion(obj) {
+    return obj.id === 1;
+  }
+  
+  var question = questions.find(findQuestion)
+
+  questionsHeading.textContent = question.question
+  
+  var filteredAnswers = possibleAnswers
+    .filter(function (obj) {
+      return obj.questionid === 1;
+    })
+    .map(function (obj) {
+      return obj
+    })
+  
+  var length = filteredAnswers.length
+  
+  for (i = 0; i < length; i++) {
+    var answerButton = document.createElement("input")
+    answersSection.appendChild(answerButton)
+    answerButton.setAttribute("data-index", i)
+    answerButton.setAttribute("class", "button")
+    answerButton.setAttribute("style", "margin: 5px;")
+    answerButton.setAttribute("type", "button")
+    answerButton.value = i+1+". "+filteredAnswers[i].answer
+    
+  }
+
+  document.querySelectorAll('.button').forEach(item => {
+    item.addEventListener('click', event => {      
+      createAnswers();
+    })
   })
-  .map(function (obj) {
-    return obj
-  })
-
-var length = filteredAnswers.length
-
-for (i = 0; i < length; i++) {
-  var answerButton = document.createElement("input")
-  answersSection.appendChild(answerButton)
-  answerButton.setAttribute("data-index", i)
-  answerButton.setAttribute("style", "margin: 5px;")
-  answerButton.setAttribute("type", "button")
-  answerButton.value = filteredAnswers[i].answer
+  // document.querySelectorAll(".button").addEventListener("click", function () {
+  //   quizSection.style.display = "none"
+  // })
 }
