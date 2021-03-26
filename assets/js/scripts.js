@@ -1,3 +1,126 @@
+var timerCount=30;
+var questionNumber=1;
+
+var startSection = document.querySelector(".start-section")
+var quizSection = document.querySelector(".quiz-section")
+var timerElement = document.querySelector(".timer-count");
+var answersSection = document.querySelector(".answers-section")
+var questionsHeading = document.querySelector(".questions-heading")
+var score=0
+var areAllAnswered = false;
+
+timerElement.textContent="Timer: "+timerCount
+
+document.querySelector("#start-button").addEventListener("click", function () {
+  startSection.style.display = "none"
+  quizSection.style.display = "block"
+  startQuiz();
+  fillAnswersSection();
+})
+
+function fillAnswersSection(){
+  clearAnswersSection();
+  if (questionNumber<questions.length){
+    questionNumber++
+    var question = questions.find(getQuestion)
+    var answers=getAnswers()
+    questionsHeading.textContent = question.question
+    createAnswers(answers)
+    addAnswersEventListeners();
+  }
+  else{
+    areAllAnswered=true
+    createfinalScore();
+  }
+}
+
+function createAnswers(answers){
+  var length = answers.length
+  for (i = 0; i < length; i++) {
+    var answerButton = document.createElement("input")
+    answersSection.appendChild(answerButton)
+    answerButton.setAttribute("data-correct", answers[i].correct)
+    answerButton.setAttribute("class", "answer")
+    answerButton.setAttribute("style", "margin: 5px;")
+    answerButton.setAttribute("type", "button")
+    answerButton.value = i+1+". "+answers[i].answer
+  }
+}
+
+function addAnswersEventListeners(){
+document.querySelectorAll('.answer').forEach(item => {
+  item.addEventListener('click', event => {  
+    checkAnswer(item);    
+    fillAnswersSection();
+  })
+})
+}
+
+function checkAnswer(e){
+  if (e.getAttribute("data-correct")==="true"){
+    alert("ok")
+  }
+}
+
+function clearAnswersSection(){
+if (answersSection.children.length>0){
+  while (answersSection.firstChild) {
+    answersSection.removeChild(answersSection.firstChild);
+  }
+}
+}
+
+function startQuiz() {
+  areAllAnswered = false;
+  startTimer()
+}
+
+function startTimer() {
+  // Sets timer
+  timer = setInterval(function() {
+    timerCount--;
+    timerElement.textContent = "Timer: "+timerCount;
+    if (timerCount >= 0) {
+      // Tests if win condition is met
+      if (areAllAnswered && timerCount > 0) {
+        // Clears interval and stops timer
+        clearInterval(timer);
+        createfinalScore();
+      }
+    }
+  // Tests if time has run out
+  if (timerCount === 0) {
+    // Clears interval
+    clearInterval(timer);
+    createfinalScore();
+  }
+}, 1000);
+}
+
+function createfinalScore(){
+  questionsHeading.textContent="All Done!"
+  clearAnswersSection();
+  var finalScore = document.createElement("p")
+  answersSection.appendChild(finalScore)
+  finalScore.textContent="Your final score is: "+timerCount
+  questionNumber=1;
+}
+
+
+function getQuestion(obj) {
+  return obj.id === questionNumber;
+}
+
+function getAnswers(){
+  var filteredAnswers = possibleAnswers.filter(function (obj) {
+    return obj.questionid === questionNumber;
+  })
+  .map(function (obj) {
+    return obj
+  })
+  return filteredAnswers;
+}
+
 const questions = [
   {
     id: 1,
@@ -185,125 +308,3 @@ const possibleAnswers = [
     correct:"true",
   },
 ]
-
-var timerCount=300;
-var questionNumber=1;
-var loseCounter = 0;
-
-var startSection = document.querySelector(".start-section")
-var quizSection = document.querySelector(".quiz-section")
-var timerElement = document.querySelector(".timer-count");
-var answersSection = document.querySelector(".answers-section")
-var questionsHeading = document.querySelector(".questions-heading")
-var score=0
-
-
-
-timerElement.textContent=timerCount
-
-document.querySelector("#start-button").addEventListener("click", function () {
-  startSection.style.display = "none"
-  quizSection.style.display = "block"
-  startQuiz();
-  createAnswers();
-})
-
-
-function checkAnswer(e){
-  if (e.getAttribute("data-correct")==="true"){
-    alert("ok")
-  }
-}
-
-function clearAnswersSection(){
-if (answersSection.children.length>0){
-  while (answersSection.firstChild) {
-    answersSection.removeChild(answersSection.firstChild);
-  }
-}
-}
-
-
-function startQuiz() {
-  // isWin = false;
-  //timerCount = 90;
-  // // Prevents start button from being clicked when round is in progress
-  //startButton.disabled = true;
-  // renderBlanks()
-  startTimer()
-}
-
-
-function startTimer() {
-  // Sets timer
-  timer = setInterval(function() {
-    timerCount--;
-    timerElement.textContent = timerCount;
-    if (timerCount >= 0) {
-      // Tests if win condition is met
-      // if (isWin && timerCount > 0) {
-      //   // Clears interval and stops timer
-      //   clearInterval(timer);
-      //   winGame();
-      // }
-    }
-  // Tests if time has run out
-  if (timerCount === 0) {
-    // Clears interval
-    clearInterval(timer);
-    createfinalScore();
-  }
-}, 1000);
-}
-
-
-function createAnswers(){
-
-  function findQuestion(obj) {
-    return obj.id === questionNumber;
-  }
-  
-  var question = questions.find(findQuestion)
-
-  questionsHeading.textContent = question.question
-  
-      clearAnswersSection();
-  
-
-  var filteredAnswers = possibleAnswers
-    .filter(function (obj) {
-      return obj.questionid === questionNumber;
-    })
-    .map(function (obj) {
-      return obj
-    })
-  
-  var length = filteredAnswers.length
-  
-  for (i = 0; i < length; i++) {
-    var answerButton = document.createElement("input")
-    answersSection.appendChild(answerButton)
-    answerButton.setAttribute("data-correct", filteredAnswers[i].correct)
-    answerButton.setAttribute("class", "button")
-    answerButton.setAttribute("style", "margin: 5px;")
-    answerButton.setAttribute("type", "button")
-    answerButton.value = i+1+". "+filteredAnswers[i].answer
-  }
-
-  document.querySelectorAll('.button').forEach(item => {
-    item.addEventListener('click', event => {  
-      checkAnswer(item);    
-      createAnswers();
-    })
-  })
-  questionNumber++;
-}
-
-function createfinalScore(){
-  questionsHeading.textContent="All Done!"
-  clearAnswersSection();
-  var finalScore = document.createElement("p")
-  answersSection.appendChild(finalScore)
-  finalScore.textContent="Your final score..."
-  questionNumber=1;
-}
