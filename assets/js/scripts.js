@@ -1,11 +1,18 @@
-var timerCount=30;
+var timerCount=90;
 var questionNumber=1;
+
 
 var startSection = document.querySelector(".start-section")
 var quizSection = document.querySelector(".quiz-section")
 var timerElement = document.querySelector(".timer-count");
 var answersSection = document.querySelector(".answers-section")
 var questionsHeading = document.querySelector(".questions-heading")
+var resultsSection = document.querySelector(".results-section")
+var answerResult = document.createElement("p")
+var hr=document.createElement("hr")
+resultsSection.appendChild(hr)
+resultsSection.appendChild(answerResult)
+
 var score=0
 var areAllAnswered = false;
 
@@ -57,9 +64,29 @@ document.querySelectorAll('.answer').forEach(item => {
 }
 
 function checkAnswer(e){
+  resultsSection.setAttribute("style","opacity: 1; visibility: visible; -webkit-transition: none; -moz-transition: none; -o-transition: none;")
+  
   if (e.getAttribute("data-correct")==="true"){
-    alert("ok")
+    answerResult.textContent="Correct!"        
   }
+  else{
+    timerCount-=10;
+    answerResult.textContent="Wrong!"
+  }
+  
+  var waitTransition=1;
+
+  wait = setInterval(function() {
+    waitTransition--;
+    if (waitTransition >= 0) {
+      resultsSection.setAttribute("style","opacity: 0; visibility: hidden; -webkit-transition: visibility 2s linear, opacity 2s linear; -moz-transition: visibility 2s linear, opacity 2s linear; -o-transition: visibility 2s linear, opacity 2s linear;")      
+    }
+  // Tests if time has run out
+  if (timerCount === 0) {
+    // Clears interval
+    clearInterval(timer);
+  }
+}, 0);
 }
 
 function clearAnswersSection(){
