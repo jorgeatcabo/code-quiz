@@ -186,11 +186,19 @@ const possibleAnswers = [
   },
 ]
 
-var timerCount=90;
+var timerCount=300;
+var questionNumber=1;
+var loseCounter = 0;
 
 var startSection = document.querySelector(".start-section")
 var quizSection = document.querySelector(".quiz-section")
 var timerElement = document.querySelector(".timer-count");
+var answersSection = document.querySelector(".answers-section")
+var questionsHeading = document.querySelector(".questions-heading")
+var score=0
+
+
+
 timerElement.textContent=timerCount
 
 document.querySelector("#start-button").addEventListener("click", function () {
@@ -201,9 +209,20 @@ document.querySelector("#start-button").addEventListener("click", function () {
 })
 
 
+function checkAnswer(e){
+  if (e.getAttribute("data-correct")==="true"){
+    alert("ok")
+  }
+}
 
-var answersSection = document.querySelector(".answers-section")
-var questionsHeading = document.querySelector(".questions-heading")
+function clearAnswersSection(){
+if (answersSection.children.length>0){
+  while (answersSection.firstChild) {
+    answersSection.removeChild(answersSection.firstChild);
+  }
+}
+}
+
 
 function startQuiz() {
   // isWin = false;
@@ -231,25 +250,29 @@ function startTimer() {
   // Tests if time has run out
   if (timerCount === 0) {
     // Clears interval
-    // clearInterval(timer);
-    // loseGame();
+    clearInterval(timer);
+    createfinalScore();
   }
 }, 1000);
 }
 
 
 function createAnswers(){
+
   function findQuestion(obj) {
-    return obj.id === 1;
+    return obj.id === questionNumber;
   }
   
   var question = questions.find(findQuestion)
 
   questionsHeading.textContent = question.question
   
+      clearAnswersSection();
+  
+
   var filteredAnswers = possibleAnswers
     .filter(function (obj) {
-      return obj.questionid === 1;
+      return obj.questionid === questionNumber;
     })
     .map(function (obj) {
       return obj
@@ -260,20 +283,27 @@ function createAnswers(){
   for (i = 0; i < length; i++) {
     var answerButton = document.createElement("input")
     answersSection.appendChild(answerButton)
-    answerButton.setAttribute("data-index", i)
+    answerButton.setAttribute("data-correct", filteredAnswers[i].correct)
     answerButton.setAttribute("class", "button")
     answerButton.setAttribute("style", "margin: 5px;")
     answerButton.setAttribute("type", "button")
     answerButton.value = i+1+". "+filteredAnswers[i].answer
-    
   }
 
   document.querySelectorAll('.button').forEach(item => {
-    item.addEventListener('click', event => {      
+    item.addEventListener('click', event => {  
+      checkAnswer(item);    
       createAnswers();
     })
   })
-  // document.querySelectorAll(".button").addEventListener("click", function () {
-  //   quizSection.style.display = "none"
-  // })
+  questionNumber++;
+}
+
+function createfinalScore(){
+  questionsHeading.textContent="All Done!"
+  clearAnswersSection();
+  var finalScore = document.createElement("p")
+  answersSection.appendChild(finalScore)
+  finalScore.textContent="Your final score..."
+  questionNumber=1;
 }
