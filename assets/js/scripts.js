@@ -197,6 +197,8 @@ var questionsHeading = document.querySelector(".questions-heading")
 var resultsSection = document.querySelector(".results-section")
 var answerResult = document.createElement("p")
 var hr=document.createElement("hr")
+
+
 resultsSection.appendChild(hr)
 resultsSection.appendChild(answerResult)
 
@@ -317,8 +319,33 @@ function createfinalScore(){
   questionsHeading.textContent="All Done!"
   clearAnswersSection();
   var finalScore = document.createElement("p")
+
+  var submitScore = document.createElement("form");
+  
+
+  submitScore.setAttribute('id',"submit-form");
+  
+  var label = document.createElement("Label");
+  label.htmlFor = "score";
+  label.innerHTML="Enter Initials:";
+  var initials = document.createElement("input");
+  initials.setAttribute('type',"text");
+  initials.setAttribute('name',"score");
+  
+  var submit = document.createElement("input");
+  submit.setAttribute('type',"submit");
+  submit.setAttribute('value',"Submit");
+  
+  submitScore.appendChild(label);
+  submitScore.appendChild(initials);
+  submitScore.appendChild(submit);
+  
+  
+  
   answersSection.appendChild(finalScore)
   finalScore.textContent="Your final score is: "+score+"/"+numberOfQuestions
+  answersSection.appendChild(submitScore)
+  addFormEventListener();
   questionNumber=1;
 }
 
@@ -336,3 +363,37 @@ function getAnswers(){
   })
   return filteredAnswers;
 }
+
+function createHighScores(){
+  questionsHeading.textContent="High Scores!"
+  clearAnswersSection();
+ 
+  var i = document.createElement("input"); //input element, text
+  i.setAttribute('type',"text");
+  i.setAttribute('name',"score");
+  
+  submitScore.appendChild(label);
+  submitScore.appendChild(i);
+  submitScore.appendChild(s);
+  
+  
+  //document.getElementsByTagName('body')[0].appendChild(f);
+  
+  answersSection.appendChild(finalScore)
+  finalScore.textContent="Your final score is: "+score+"/"+numberOfQuestions
+  answersSection.appendChild(submitScore)  
+}
+
+function addFormEventListener(){
+  document.querySelectorAll('form').forEach(item => {
+    item.addEventListener('submit', event => {  
+      handleFormSubmit();
+    })
+  })
+}
+
+function handleFormSubmit(event) {
+  // Prevent the default behavior
+  event.preventDefault();
+}
+  
