@@ -188,14 +188,17 @@ const possibleAnswers = [
 var timerCount=90;
 var questionNumber=1;
 
-
 var startSection = document.querySelector(".start-section")
 var quizSection = document.querySelector(".quiz-section")
 var timerElement = document.querySelector(".timer-count");
 var answersSection = document.querySelector(".answers-section")
 var questionsHeading = document.querySelector(".questions-heading")
 var resultsSection = document.querySelector(".results-section")
+
+
 var answerResult = document.createElement("p")
+
+
 var hr=document.createElement("hr")
 
 
@@ -370,9 +373,10 @@ function getAnswers(){
 }
 
 function createHighScores(){
+  console.log("object")
   questionsHeading.textContent="Highscores"
   clearAnswersSection();
- 
+  console.log("object2")
   // var highScore = document.createElement("input");
   var highScore = document.createElement("div");
   var goBack = document.createElement("button");
@@ -386,11 +390,13 @@ function createHighScores(){
 
   var localstorage = {};
   for (var i = 0; i < localStorage.length; i++){
+    console.log("object3")
     localstorage[arrayOfKeys[i]] = arrayOfValues[i]
   }
 
   var orderedLocalStorage = [];
   for (var item in localstorage) {
+    console.log("object4")
     orderedLocalStorage.push([item, localstorage[item]]);
   }
 
@@ -401,6 +407,7 @@ function createHighScores(){
   var scorePosition=1
 
   for (var i = 0; i < orderedLocalStorage.length; i++){
+    console.log("object5")
     var parr=document.createElement("p");
     highScore.appendChild(parr)
     parr.textContent=scorePosition+". "+orderedLocalStorage[i][0]+" - "+orderedLocalStorage[i][1]
@@ -422,7 +429,7 @@ function createHighScores(){
   answersSection.appendChild(clearHighScores)
 
   addGobackEventListener()
-  addClearHighScoresEventListener()
+  addClearHighScoresEventListener(highScore)
 }
 
 function addFormEventListener(){
@@ -441,11 +448,11 @@ function addGobackEventListener(){
   })
 }
 
-function addClearHighScoresEventListener(){
+function addClearHighScoresEventListener(highScore){
   document.querySelectorAll('#clearhighscores').forEach(item => {
     item.addEventListener('click', event => {  
       localStorage.clear();
-      clearScores(event);
+      clearScores(highScore);
     })
   })
 }
@@ -457,10 +464,16 @@ function handleFormSubmit(event,item) {
   createHighScores()
 }
   
-function clearScores(event){
+function clearScores(highScore){
 if (highScore.children.length>0){
   while (highScore.firstChild) {
     highScore.removeChild(highScore.firstChild);
   }
 }
 }
+
+document.querySelector(".view-hihgscores").addEventListener("click", function(){
+  startSection.style.display = "none"
+  quizSection.style.display = "block"
+  createHighScores()
+});
