@@ -208,11 +208,15 @@ var areAllAnswered = false;
 
 timerElement.textContent="Timer: "+timerCount
 
-document.querySelector("#start-button").addEventListener("click", function () {
+function init(){
   startSection.style.display = "none"
   quizSection.style.display = "block"
   startQuiz();
   fillAnswersSection();
+}
+
+document.querySelector("#start-button").addEventListener("click", function () {
+  init()
 })
 
 function fillAnswersSection(){
@@ -374,12 +378,8 @@ function createHighScores(){
   var goBack = document.createElement("button");
   var clearHighScores = document.createElement("button");
 
-  // highScore.setAttribute('type',"text");
-  // highScore.setAttribute('name',"high-scores");
   highScore.setAttribute('id',"high-scores");
   highScore.setAttribute('style',"color: red;");
-  // highScore.setAttribute('readonly',"false");
-  //highScore.textContent=localStorage.getItem("JS")+"/"+questions.length;
   
   var arrayOfKeys = Object.keys(localStorage);
   var arrayOfValues = Object.values(localStorage);
@@ -397,32 +397,55 @@ function createHighScores(){
   orderedLocalStorage.sort(function(a, b) {
       return b[1] - a[1];
   });
-  
+
   var scorePosition=1
+
   for (var i = 0; i < orderedLocalStorage.length; i++){
     var parr=document.createElement("p");
     highScore.appendChild(parr)
-    parr.textContent=scorePosition+". "+orderedLocalStorage[i][0]+" "+orderedLocalStorage[i][1]
+    parr.textContent=scorePosition+". "+orderedLocalStorage[i][0]+" - "+orderedLocalStorage[i][1]
     scorePosition++
   }
 
   goBack.setAttribute('type',"button");
   goBack.setAttribute('name',"go-back");
+  goBack.setAttribute('id',"goback");
   goBack.textContent="Go Back";
 
   clearHighScores.setAttribute('type',"button");
   clearHighScores.setAttribute('name',"clear-high-scores");
+  clearHighScores.setAttribute('id',"clearhighscores");
   clearHighScores.textContent="Clear Highscores";
   
   answersSection.appendChild(highScore)
   answersSection.appendChild(goBack)
   answersSection.appendChild(clearHighScores)
+
+  addGobackEventListener()
+  addClearHighScoresEventListener()
 }
 
 function addFormEventListener(){
   document.querySelectorAll('#submit-form').forEach(item => {
     item.addEventListener('submit', event => {  
       handleFormSubmit(event,item);
+    })
+  })
+}
+
+function addGobackEventListener(){
+  document.querySelectorAll('#goback').forEach(item => {
+    item.addEventListener('click', event => {  
+      location.reload();
+    })
+  })
+}
+
+function addClearHighScoresEventListener(){
+  document.querySelectorAll('#clearhighscores').forEach(item => {
+    item.addEventListener('click', event => {  
+      localStorage.clear();
+      clearScores(event);
     })
   })
 }
@@ -434,3 +457,10 @@ function handleFormSubmit(event,item) {
   createHighScores()
 }
   
+function clearScores(event){
+if (highScore.children.length>0){
+  while (highScore.firstChild) {
+    highScore.removeChild(highScore.firstChild);
+  }
+}
+}
