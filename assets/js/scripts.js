@@ -330,7 +330,7 @@ function createfinalScore(){
   label.innerHTML="Enter Initials:";
   var initials = document.createElement("input");
   initials.setAttribute('type',"text");
-  initials.setAttribute('name',"score");
+  initials.setAttribute('name',"initials");
   
   var submit = document.createElement("input");
   submit.setAttribute('type',"submit");
@@ -345,6 +345,7 @@ function createfinalScore(){
   answersSection.appendChild(finalScore)
   finalScore.textContent="Your final score is: "+score+"/"+numberOfQuestions
   answersSection.appendChild(submitScore)
+  
   addFormEventListener();
   questionNumber=1;
 }
@@ -365,35 +366,71 @@ function getAnswers(){
 }
 
 function createHighScores(){
-  questionsHeading.textContent="High Scores!"
+  questionsHeading.textContent="Highscores"
   clearAnswersSection();
  
-  var i = document.createElement("input"); //input element, text
-  i.setAttribute('type',"text");
-  i.setAttribute('name',"score");
+  // var highScore = document.createElement("input");
+  var highScore = document.createElement("div");
+  var goBack = document.createElement("button");
+  var clearHighScores = document.createElement("button");
+
+  // highScore.setAttribute('type',"text");
+  // highScore.setAttribute('name',"high-scores");
+  highScore.setAttribute('id',"high-scores");
+  highScore.setAttribute('style',"color: red;");
+  // highScore.setAttribute('readonly',"false");
+  //highScore.textContent=localStorage.getItem("JS")+"/"+questions.length;
   
-  submitScore.appendChild(label);
-  submitScore.appendChild(i);
-  submitScore.appendChild(s);
+  var arrayOfKeys = Object.keys(localStorage);
+  var arrayOfValues = Object.values(localStorage);
+
+  var localstorage = {};
+  for (var i = 0; i < localStorage.length; i++){
+    localstorage[arrayOfKeys[i]] = arrayOfValues[i]
+  }
+
+  var orderedLocalStorage = [];
+  for (var item in localstorage) {
+    orderedLocalStorage.push([item, localstorage[item]]);
+  }
+
+  orderedLocalStorage.sort(function(a, b) {
+      return b[1] - a[1];
+  });
   
+  var scorePosition=1
+  for (var i = 0; i < orderedLocalStorage.length; i++){
+    var parr=document.createElement("p");
+    highScore.appendChild(parr)
+    parr.textContent=scorePosition+". "+orderedLocalStorage[i][0]+" "+orderedLocalStorage[i][1]
+    scorePosition++
+  }
+
+  goBack.setAttribute('type',"button");
+  goBack.setAttribute('name',"go-back");
+  goBack.textContent="Go Back";
+
+  clearHighScores.setAttribute('type',"button");
+  clearHighScores.setAttribute('name',"clear-high-scores");
+  clearHighScores.textContent="Clear Highscores";
   
-  //document.getElementsByTagName('body')[0].appendChild(f);
-  
-  answersSection.appendChild(finalScore)
-  finalScore.textContent="Your final score is: "+score+"/"+numberOfQuestions
-  answersSection.appendChild(submitScore)  
+  answersSection.appendChild(highScore)
+  answersSection.appendChild(goBack)
+  answersSection.appendChild(clearHighScores)
 }
 
 function addFormEventListener(){
-  document.querySelectorAll('form').forEach(item => {
+  document.querySelectorAll('#submit-form').forEach(item => {
     item.addEventListener('submit', event => {  
-      handleFormSubmit();
+      handleFormSubmit(event,item);
     })
   })
 }
 
-function handleFormSubmit(event) {
+function handleFormSubmit(event,item) {
   // Prevent the default behavior
   event.preventDefault();
+  localStorage.setItem(item.initials.value, score);
+  createHighScores()
 }
   
