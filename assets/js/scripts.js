@@ -1,3 +1,4 @@
+//Objects Array For Questions
 const questions = [
   {
     id: 1,
@@ -33,6 +34,7 @@ const questions = [
   },
 ]
 
+//Objects Array For Questions Answers
 const possibleAnswers = [
   {
     id: "1",
@@ -185,6 +187,7 @@ const possibleAnswers = [
     correct:"true",
   },
 ]
+
 var timerCount=90;
 var questionNumber=1;
 
@@ -194,15 +197,10 @@ var timerElement = document.querySelector(".timer-count");
 var answersSection = document.querySelector(".answers-section")
 var questionsHeading = document.querySelector(".questions-heading")
 questionsHeading.setAttribute("style","width: 80%;")
+
 var resultsSection = document.querySelector(".results-section")
-
-
 var answerResult = document.createElement("p")
-
-
 var hr=document.createElement("hr")
-
-
 resultsSection.appendChild(hr)
 resultsSection.appendChild(answerResult)
 
@@ -212,6 +210,7 @@ var areAllAnswered = false;
 
 timerElement.textContent="Timer: "+timerCount
 
+//Main Function For Starting Quiz
 function init(){
   startSection.style.display = "none"
   quizSection.style.display = "block"
@@ -219,12 +218,16 @@ function init(){
   fillAnswersSection();
 }
 
+//Adding Event Listener To Start Button
 document.querySelector("#start-button").addEventListener("click", function () {
   init()
 })
 
+//Function For Filling Answers Section Depending On Question
 function fillAnswersSection(){
   clearAnswersSection();
+
+  //Code For Getting Next Question And Create Possible Answers
   if (questionNumber<=questions.length){
     var question = questions.find(getQuestion)
     var answers=getAnswers()
@@ -239,6 +242,7 @@ function fillAnswersSection(){
   }
 }
 
+//Function For Creating Answers Buttons Depending On Question
 function createAnswers(answers){
   var length = answers.length
   for (i = 0; i < length; i++) {
@@ -254,6 +258,7 @@ function createAnswers(answers){
   }
 }
 
+//Function For Add Events Listeners To Every Answer Button
 function addAnswersEventListeners(){
 document.querySelectorAll('.answer').forEach(item => {
   item.addEventListener('click', event => {  
@@ -263,6 +268,7 @@ document.querySelectorAll('.answer').forEach(item => {
 })
 }
 
+//Function For Checking Answers
 function checkAnswer(e){
   resultsSection.setAttribute("style","opacity: 1; visibility: visible; -webkit-transition: none; -moz-transition: none; -o-transition: none;")
   
@@ -290,6 +296,7 @@ function checkAnswer(e){
 }, 0);
 }
 
+//Function For Clearing Answers Section
 function clearAnswersSection(){
 if (answersSection.children.length>0){
   while (answersSection.firstChild) {
@@ -298,18 +305,19 @@ if (answersSection.children.length>0){
 }
 }
 
+//Function For Initializing Timer 
 function startQuiz() {
   areAllAnswered = false;
   startTimer()
 }
 
+//Function For Timer
 function startTimer() {
   // Sets timer
   timer = setInterval(function() {
     timerCount--;
     timerElement.textContent = "Timer: "+timerCount;
     if (timerCount >= 0) {
-      // Tests if win condition is met
       if (areAllAnswered && timerCount > 0) {
         // Clears interval and stops timer
         clearInterval(timer);
@@ -325,6 +333,7 @@ function startTimer() {
 }, 1000);
 }
 
+//Function For Showing Final Score And Form For Submitting It
 function createfinalScore(){
   questionsHeading.textContent="All Done!"
   clearAnswersSection();
@@ -334,12 +343,12 @@ function createfinalScore(){
   var submitScore = document.createElement("form");
   submitScore.setAttribute("style","margin:10px 0 10px 0;")
   
-
   submitScore.setAttribute('id',"submit-form");
   
   var label = document.createElement("Label");
   label.htmlFor = "score";
   label.innerHTML="Enter Initials:";
+
   var initials = document.createElement("input");
   initials.setAttribute('type',"text");
   initials.setAttribute('name',"initials");
@@ -353,8 +362,6 @@ function createfinalScore(){
   submitScore.appendChild(initials);
   submitScore.appendChild(submit);
   
-  
-  
   answersSection.appendChild(finalScore)
   finalScore.textContent="Your final score is: "+score+"/"+numberOfQuestions
   answersSection.appendChild(submitScore)
@@ -363,11 +370,12 @@ function createfinalScore(){
   questionNumber=1;
 }
 
-
+//Function For Obtaining Each Question
 function getQuestion(obj) {
   return obj.id === questionNumber;
 }
 
+//Function For Obtaining Possible Question Answers
 function getAnswers(){
   var filteredAnswers = possibleAnswers.filter(function (obj) {
     return obj.questionid === questionNumber;
@@ -378,6 +386,7 @@ function getAnswers(){
   return filteredAnswers;
 }
 
+//Function For Showing Highscores In Descending Order And Restart Quiz
 function createHighScores(){
   questionsHeading.textContent="Highscores"
   clearAnswersSection();
@@ -436,6 +445,7 @@ function createHighScores(){
   addClearHighScoresEventListener(highScore)
 }
 
+//Function For Adding Event Listener To The Final Score Submit Form
 function addFormEventListener(){
   document.querySelectorAll('#submit-form').forEach(item => {
     item.addEventListener('submit', event => {  
@@ -444,6 +454,7 @@ function addFormEventListener(){
   })
 }
 
+//Function For Adding Event Listener To Go Back Button
 function addGobackEventListener(){
   document.querySelectorAll('#goback').forEach(item => {
     item.addEventListener('click', event => {  
@@ -452,6 +463,7 @@ function addGobackEventListener(){
   })
 }
 
+//Function For Clearing Local Storage Highscores
 function addClearHighScoresEventListener(highScore){
   document.querySelectorAll('#clearhighscores').forEach(item => {
     item.addEventListener('click', event => {  
@@ -461,13 +473,15 @@ function addClearHighScoresEventListener(highScore){
   })
 }
 
+//Function For Controlling Submit In Form
 function handleFormSubmit(event,item) {
   // Prevent the default behavior
   event.preventDefault();
   localStorage.setItem(item.initials.value, score);
   createHighScores()
 }
-  
+
+//Function For Cleaning Highscore Area
 function clearScores(highScore){
 if (highScore.children.length>0){
   while (highScore.firstChild) {
@@ -476,6 +490,7 @@ if (highScore.children.length>0){
 }
 }
 
+//Function For Add Event Listener To View Highscore Button
 document.querySelector(".view-hihgscores").addEventListener("click", function(){
   startSection.style.display = "none"
   quizSection.style.display = "block"

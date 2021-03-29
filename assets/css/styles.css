@@ -1,10 +1,4 @@
 /* Selectors */
-/* Universal Selector */
-/* * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  } */
   
   html {
     height: 100%;
@@ -28,10 +22,12 @@
 
   /* Classes */
 
+  /* Styles Rules For Buttons */
   .view-hihgscores, .start-button{
     background-color: rgb(168, 104, 241); 
   }
 
+  /* Styles Rules For Main Header */
   .scores-header{
     display: flex;
     flex-direction: row;
@@ -40,6 +36,7 @@
     margin:20px;
   }
   
+  /* Styles Rules For Main Content */
   .main-content{
     display: flex;
     flex-direction: column;
@@ -48,6 +45,7 @@
     padding:5px;
   }
 
+  /* Styles Rules For Start Section */
   .start-section{
     display: flex;
     flex-direction: column;
@@ -56,6 +54,7 @@
     margin:20px;
   }
 
+  /* Styles Rules For Quiz Section */
   .quiz-section{
     display: flex;
     flex-direction: column;
@@ -63,10 +62,8 @@
     display: none;
     margin:20px 50px 20px 50px;
   }
-
-  .questions-heading{
-  }
-
+ 
+   /* Styles Rules For Answers Section */
   .answers-section{
       display: flex;
       flex-direction: column;
@@ -74,6 +71,7 @@
       margin:20px;
   }
 
+   /* Styles Rules For Start Button */
   .start-button{
     margin:10px; 
   }
