@@ -1,10 +1,10 @@
 /* Selectors */
 /* Universal Selector */
-* {
+/* * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
+  } */
   
   html {
     height: 100%;
@@ -45,6 +45,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding:5px;
   }
 
   .start-section{
