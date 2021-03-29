@@ -247,6 +247,8 @@ function createAnswers(answers){
     answerButton.setAttribute("class", "answer")
     answerButton.setAttribute("style", "margin: 5px;")
     answerButton.setAttribute("type", "button")
+    answerButton.setAttribute("style", "margin: 5px; padding: 5px; background-color: rgb(168, 104, 241);")
+    
     answerButton.value = i+1+". "+answers[i].answer
   }
 }
@@ -326,8 +328,10 @@ function createfinalScore(){
   questionsHeading.textContent="All Done!"
   clearAnswersSection();
   var finalScore = document.createElement("p")
+  finalScore.setAttribute("style","margin:10px 0 10px 0;")
 
   var submitScore = document.createElement("form");
+  submitScore.setAttribute("style","margin:10px 0 10px 0;")
   
 
   submitScore.setAttribute('id',"submit-form");
@@ -342,6 +346,7 @@ function createfinalScore(){
   var submit = document.createElement("input");
   submit.setAttribute('type',"submit");
   submit.setAttribute('value',"Submit");
+  submit.setAttribute("style", "margin: 5px; padding: 5px; background-color: rgb(168, 104, 241);")
   
   submitScore.appendChild(label);
   submitScore.appendChild(initials);
@@ -373,12 +378,11 @@ function getAnswers(){
 }
 
 function createHighScores(){
-  console.log("object")
   questionsHeading.textContent="Highscores"
   clearAnswersSection();
-  console.log("object2")
   // var highScore = document.createElement("input");
   var highScore = document.createElement("div");
+  
   var goBack = document.createElement("button");
   var clearHighScores = document.createElement("button");
 
@@ -390,13 +394,11 @@ function createHighScores(){
 
   var localstorage = {};
   for (var i = 0; i < localStorage.length; i++){
-    console.log("object3")
     localstorage[arrayOfKeys[i]] = arrayOfValues[i]
   }
 
   var orderedLocalStorage = [];
   for (var item in localstorage) {
-    console.log("object4")
     orderedLocalStorage.push([item, localstorage[item]]);
   }
 
@@ -407,7 +409,6 @@ function createHighScores(){
   var scorePosition=1
 
   for (var i = 0; i < orderedLocalStorage.length; i++){
-    console.log("object5")
     var parr=document.createElement("p");
     highScore.appendChild(parr)
     parr.textContent=scorePosition+". "+orderedLocalStorage[i][0]+" - "+orderedLocalStorage[i][1]
@@ -417,11 +418,13 @@ function createHighScores(){
   goBack.setAttribute('type',"button");
   goBack.setAttribute('name',"go-back");
   goBack.setAttribute('id',"goback");
+  goBack.setAttribute("style","margin:15px 0 15px 0;")
   goBack.textContent="Go Back";
 
   clearHighScores.setAttribute('type',"button");
   clearHighScores.setAttribute('name',"clear-high-scores");
   clearHighScores.setAttribute('id',"clearhighscores");
+  clearHighScores.setAttribute("style","margin:15px 0 15px 0;")
   clearHighScores.textContent="Clear Highscores";
   
   answersSection.appendChild(highScore)
