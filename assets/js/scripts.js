@@ -193,7 +193,7 @@ var quizSection = document.querySelector(".quiz-section")
 var timerElement = document.querySelector(".timer-count");
 var answersSection = document.querySelector(".answers-section")
 var questionsHeading = document.querySelector(".questions-heading")
-questionsHeading.setAttribute("style","width: 50%;")
+questionsHeading.setAttribute("style","width: 80%;")
 var resultsSection = document.querySelector(".results-section")
 
 
@@ -248,7 +248,7 @@ function createAnswers(answers){
     answerButton.setAttribute("class", "answer")
     answerButton.setAttribute("style", "margin: 5px;")
     answerButton.setAttribute("type", "button")
-    answerButton.setAttribute("style", "margin: 5px; padding: 5px; background-color: rgb(168, 104, 241); width: 50%;")
+    answerButton.setAttribute("style", "margin: 5px; padding: 5px; background-color: rgb(168, 104, 241); width: 80%;")
     
     answerButton.value = i+1+". "+answers[i].answer
   }
